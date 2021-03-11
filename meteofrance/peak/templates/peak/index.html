@@ -1,0 +1,35 @@
+{% load leaflet_tags %}
+
+<head>
+	{% leaflet_js %}
+  	{% leaflet_css %}
+</head>
+
+<body>
+
+<style>
+
+    .leaflet-container {  /* all maps */
+        width:  100%;
+        height: 100%;
+    }
+
+</style>
+	<script>
+		function map_init_basic (map, options) {
+			const peaksList = {{peaks|safe}};
+			console.log(peaksList)
+
+
+			peaksList.forEach(peak => init_marker(map, peak));
+
+		}
+
+		function init_marker(map, peak) {
+ 			const marker = L.marker([peak.lat, peak.lon]).addTo(map);
+			marker.bindPopup("Name : " + peak.name + "/  Altitude : " + peak.altitude).openPopup();
+		}
+	</script>
+
+   	{% leaflet_map "yourmap" callback="window.map_init_basic" %}
+</body>
